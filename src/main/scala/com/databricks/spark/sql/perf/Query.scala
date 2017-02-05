@@ -85,14 +85,14 @@ class Query(
 
       val breakdownResults = if (includeBreakdown) {
         val depth = queryExecution.executedPlan.collect { case p: SparkPlan => p }.size
-        val physicalOperators = (0 until depth).map(i => (i, queryExecution.executedPlan(i)))
+        val physicalOperators = (0 until depth).map(i => (i, queryExecution.executedPlan.p(i)))
         val indexMap = physicalOperators.map { case (index, op) => (op, index) }.toMap
         val timeMap = new mutable.HashMap[Int, Double]
 
         physicalOperators.reverse.map {
           case (index, node) =>
             messages += s"Breakdown: ${node.simpleString}"
-            val newNode = buildDataFrame.queryExecution.executedPlan(index)
+            val newNode = buildDataFrame.queryExecution.executedPlan.p(index)
             val executionTime = measureTimeMs {
               newNode.execute().foreach((row: Any) => Unit)
             }

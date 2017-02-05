@@ -15,7 +15,6 @@ sparkPackageName := "databricks/spark-sql-perf"
 licenses := Seq("Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0"))
 
 sparkVersion := "2.1.0"
-
 sparkComponents ++= Seq("yarn", "sql", "hive", "mllib")
 
 initialCommands in console :=
