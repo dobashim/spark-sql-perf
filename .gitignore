@@ -6,6 +6,11 @@ sbt/*.jar
 .idea
 .idea_modules
 *.iml
+*swp
+*~
+
+# Hive metastore
+metastore_db
 
 # sbt specific
 build/*.jar
@@ -19,4 +24,3 @@ src_managed/
 project/boot/
 project/plugins/project/
 performance/
-metastore_db
