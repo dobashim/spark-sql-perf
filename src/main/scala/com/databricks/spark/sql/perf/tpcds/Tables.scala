@@ -127,7 +127,7 @@ class Tables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int) extend
 
       val data = df(format != "text", numPartitions)
       val tempTableName = s"${name}_text"
-      data.registerTempTable(tempTableName)
+      data.createOrReplaceTempView(tempTableName)
 
       val writer = if (partitionColumns.nonEmpty) {
         if (clusterByPartitionColumns) {
@@ -188,7 +188,7 @@ class Tables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int) extend
     def createTemporaryTable(location: String, format: String): Unit = {
       println(s"Creating temporary table $name using data stored in $location.")
       log.info(s"Creating temporary table $name using data stored in $location.")
-      sqlContext.read.format(format).load(location).registerTempTable(name)
+      sqlContext.read.format(format).load(location).createOrReplaceTempView(name)
     }
   }
 
