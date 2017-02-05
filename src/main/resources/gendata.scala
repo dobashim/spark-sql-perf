@@ -9,7 +9,7 @@ val tables = new Tables(sqlContext, dsdgenDir, scaleFactor)
 
 // Generate data.
 val location = "/tmp/dsdgen"
-val format = "text"
+val format = "parquet"
 val overwrite = true
 val partitionTables = true
 val useDoubleForDecimal = true
