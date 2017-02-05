@@ -14,22 +14,25 @@ sparkPackageName := "databricks/spark-sql-perf"
 // All Spark Packages need a license
 licenses := Seq("Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0"))
 
-sparkVersion := "2.0.1"
+sparkVersion := "2.1.0"
 
-sparkComponents ++= Seq("sql", "hive", "mllib")
-
+sparkComponents ++= Seq("yarn", "sql", "hive", "mllib")
 
 initialCommands in console :=
   """
-    |import org.apache.spark.sql._
-    |import org.apache.spark.sql.functions._
-    |import org.apache.spark.sql.types._
-    |import org.apache.spark.sql.hive.test.TestHive
-    |import TestHive.implicits
-    |import TestHive.sql
-    |
-    |val sqlContext = TestHive
-    |import sqlContext.implicits._
+    | import org.apache.spark.sql.SparkSession
+    | 
+    | val master = "local"
+    | val appName = "SparkSqlPerf"
+    | val spark = SparkSession
+    |   .builder()
+    |   .master(master)
+    |   .appName(appName)
+    |   .getOrCreate()
+    | 
+    | import spark.implicits._
+    | 
+    | val sqlContext = spark.sqlContext
   """.stripMargin
 
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
