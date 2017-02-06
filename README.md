@@ -48,9 +48,6 @@ tables.genData(location, format, overwrite, partitionTables, useDoubleForDecimal
 tables.createExternalTables(location, format, databaseName, overwrite)
 // Or, if you want to create temporary tables
 tables.createTemporaryTables(location, format)
-// Setup TPC-DS experiment
-import com.databricks.spark.sql.perf.tpcds.TPCDS
-val tpcds = new TPCDS (sqlContext = sqlContext)
 ```
 
 ### Setup a benchmark data by GenData application
@@ -106,6 +103,9 @@ Usage: gendata [options] dsdgenDir scaleFactor location
 After setup, users can use `runExperiment` function to run benchmarking queries and record query execution time. Taking TPC-DS as an example, you can start an experiment by using
 
 ```
+// Setup TPC-DS experiment
+import com.databricks.spark.sql.perf.tpcds.TPCDS
+val tpcds = new TPCDS (sqlContext = sqlContext)
 val experiment = tpcds.runExperiment(tpcds.interactiveQueries)
 ```
 
