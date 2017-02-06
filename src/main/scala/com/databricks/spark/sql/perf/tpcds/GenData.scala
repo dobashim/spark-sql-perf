@@ -1,7 +1,6 @@
 package com.databricks.spark.sql.perf.tpcds
 
-import org.apache.spark
-import org.apache.spark.SparkConf
+import org.apache.log4j.LogManager
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -9,6 +8,8 @@ import org.apache.spark.sql.SparkSession
   */
 object GenData {
   def main(args: Array[String]): Unit = {
+
+    val log = LogManager.getRootLogger
 
     // Scopt configuration
     case class Config(dsdgenDir: String = "path-to-tpcds-tools",
@@ -62,6 +63,7 @@ object GenData {
 
     parser.parse(args, Config()) match {
       case Some(config) =>
+
         // Tables in TPC-DS benchmark used by experiments.
         // dsdgenDir is the location of dsdgen tool installed in your machines.
         val spark = SparkSession.builder().master(config.sparkMaster).appName("TPCDSGenData").getOrCreate()
@@ -76,6 +78,13 @@ object GenData {
         // Create metastore tables in a specified database for your data.
         // Once tables are created, the current database will be switched to the specified database.
         tables.createExternalTables(config.location, config.format, config.databaseName, config.overwrite)
+
+        val externalTables = sqlContext.tableNames(config.databaseName)
+
+        log.info("Created tables")
+        externalTables.foreach( name =>
+          log.info(s"- $name")
+        )
 
       case None =>
         sys.exit(1)
