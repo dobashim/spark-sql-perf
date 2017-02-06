@@ -53,6 +53,55 @@ import com.databricks.spark.sql.perf.tpcds.TPCDS
 val tpcds = new TPCDS (sqlContext = sqlContext)
 ```
 
+### Setup a benchmark data by GenData application
+
+You can use GenData application to generate data.
+The following is an example of execution with Spark on YARN.
+
+```
+$ spark-submit --class com.databricks.spark.sql.perf.tpcds.GenData\
+target/scala-2.10/spark-sql-perf-assembly-0.4.11-SNAPSHOT.jar\
+/usr/local/tpc-ds/default/tools\
+1\
+/tmp/dsdgen\
+--sparkMaster yarn
+```
+
+Help
+
+```
+$ spark-submit --class com.databricks.spark.sql.perf.tpcds.GenData target/scala-2.10/spark-sql-perf-assembly-0.4.11-SNAPSHOT.jar
+
+Error: Missing argument dsdgenDir
+Error: Missing argument scaleFactor
+Error: Missing argument location
+GenData
+Usage: gendata [options] dsdgenDir scaleFactor location
+
+  dsdgenDir
+        The path to the directory which includes dsdgen tool
+  scaleFactor
+        The scale factor to be provided to dsdgen tool
+  location
+        The path to the output directory
+  --format <value>
+        The output format, such as parquet, csv and so on. default: parquet
+  --sparkMaster <value>
+        The master url of Spark. default: local
+  --databaseName <value>
+        The name of the output database. default: tpcds
+  --overwrite <value>
+        Whether to enable overwrite mode. default: true
+  --partitionTables <value>
+        Whether to split tables to partitions. default: true
+  --useDoubleForDecimal <value>
+        Whether to use Double type as a representation of Decimal. default: true
+  --clusterBypartitionColumns <value>
+        Whether to split tables by any columns. default: true
+  --filterOutNullPartitionValues <value>
+        Whether to filter the output partitions which include null. default: true
+```
+
 ### Run benchmarking queries
 After setup, users can use `runExperiment` function to run benchmarking queries and record query execution time. Taking TPC-DS as an example, you can start an experiment by using
 
