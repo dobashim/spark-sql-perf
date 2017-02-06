@@ -10,7 +10,6 @@ class TPCDSBenchmark
   extends Tpcds_1_4_Queries
   with ImpalaKitQueries
   with SimpleQueries
-  with Tpcds_1_4_Queries
   with Serializable {
 
   /**
