@@ -7,10 +7,7 @@ import org.apache.spark.sql.{SQLContext, SparkSession}
 import scala.collection.mutable
 
 class TPCDSBenchmark(sqlContext: SQLContext)
-  extends Benchmark(sqlContext)
-  with Tpcds_1_4_Queries
-  with ImpalaKitQueries
-  with SimpleQueries
+  extends TPCDS_1_4_QueriesNonBenchmark
   with Serializable {
 
   /**
@@ -143,8 +140,8 @@ object TPCDSBenchmark {
         val spark = SparkSession.builder().master(config.sparkMaster).appName("TPCDSGenData").getOrCreate()
         val sqlContext = spark.sqlContext
 
-        val tpcDSBenchmark = new TPCDSBenchmark()
-        tpcDSBenchmark.explain(tpcDSBenchmark.interactiveQueries)
+        val tpcDSBenchmark = new TPCDSBenchmark(sqlContext)
+        tpcDSBenchmark.explain(tpcDSBenchmark.runnable)
 
       case None =>
         sys.exit(1)
