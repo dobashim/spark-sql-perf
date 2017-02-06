@@ -26,41 +26,41 @@ object GenData {
     val parser = new scopt.OptionParser[Config]("gendata") {
       head("GenData")
 
-      arg[String]("<path>").action((x, c) =>
+      arg[String]("dsdgenDir").action((x, c) =>
        c.copy(dsdgenDir = x)).text("The path to the directory which includes dsdgen tool")
 
-      arg[Int]("<integer>").action((x, c) =>
+      arg[Int]("scaleFactor").action((x, c) =>
         c.copy(scaleFactor = x)).text("The scale factor to be provided to dsdgen tool")
 
-      arg[String]("<path>").action((x, c) =>
+      arg[String]("location").action((x, c) =>
         c.copy(location= x)).text("The path to the output directory")
 
-      opt[String]("<type>").action((x, c) =>
+      opt[String]("format").action((x, c) =>
         c.copy(format = x)).text("The output format, such as parquet, csv and so on. default: parquet")
 
-      opt[String]("<type or url>").action((x, c) =>
+      opt[String]("sparkMaster").action((x, c) =>
         c.copy(sparkMaster = x)).text("The master url of Spark. default: local")
 
-      opt[String]("<database name>").action((x, c) =>
+      opt[String]("databaseName").action((x, c) =>
         c.copy(databaseName = x)).text("The name of the output database. default: tpcds")
 
-      opt[Boolean]("<boolean>").action((x, c) =>
+      opt[Boolean]("overwrite").action((x, c) =>
         c.copy(overwrite = x)).text("Whether to enable overwrite mode. default: true")
 
-      opt[Boolean]("<boolean>").action((x, c) =>
+      opt[Boolean]("partitionTables").action((x, c) =>
         c.copy(partitionTables = x)).text("Whether to split tables to partitions. default: true")
 
-      opt[Boolean]("<boolean>").action((x, c) =>
+      opt[Boolean]("useDoubleForDecimal").action((x, c) =>
         c.copy(useDoubleForDecimal = x)).text("Whether to use Double type as a representation of Decimal. default: true")
 
-      opt[Boolean]("<boolean>").action((x, c) =>
+      opt[Boolean]("clusterBypartitionColumns").action((x, c) =>
         c.copy(clusterBypartitionColumns = x)).text("Whether to split tables by any columns. default: true")
 
-      opt[Boolean]("<boolean>").action((x, c) =>
+      opt[Boolean]("filterOutNullPartitionValues").action((x, c) =>
         c.copy(filterOutNullPartitionValues = x)).text("Whether to filter the output partitions which include null. default: true")
     }
 
-    parser.parse(args, Config()).match {
+    parser.parse(args, Config()) match {
       case Some(config) =>
         // Tables in TPC-DS benchmark used by experiments.
         // dsdgenDir is the location of dsdgen tool installed in your machines.
