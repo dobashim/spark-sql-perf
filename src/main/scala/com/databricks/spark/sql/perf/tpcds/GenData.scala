@@ -79,13 +79,6 @@ object GenData {
         // Once tables are created, the current database will be switched to the specified database.
         tables.createExternalTables(config.location, config.format, config.databaseName, config.overwrite)
 
-        val externalTables = sqlContext.tableNames(config.databaseName)
-
-        log.info("Created tables")
-        externalTables.foreach( name =>
-          log.info(s"- $name")
-        )
-
       case None =>
         sys.exit(1)
     }

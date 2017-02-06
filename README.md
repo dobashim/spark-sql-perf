@@ -31,26 +31,11 @@ $ bin/run --benchmark DatasetPerformance
 ## How to use it
 The rest of document will use TPC-DS benchmark as an example. We will add contents to explain how to use other benchmarks add the support of a new benchmark dataset in future.
 
-### Setup a benchmark
+### Setup a benchmark data by GenData application
 Before running any query, a dataset needs to be setup by creating a `Benchmark` object. Generating
 the TPCDS data requires dsdgen built and available on the machines. We have a fork of dsdgen that
-you will need. It can be found [here](https://github.com/davies/tpcds-kit).  
+you will need. It can be found [here](https://github.com/davies/tpcds-kit).
 
-```
-import com.databricks.spark.sql.perf.tpcds.Tables
-// Tables in TPC-DS benchmark used by experiments.
-// dsdgenDir is the location of dsdgen tool installed in your machines.
-val tables = new Tables(sqlContext, dsdgenDir, scaleFactor)
-// Generate data.
-tables.genData(location, format, overwrite, partitionTables, useDoubleForDecimal, clusterByPartitionColumns, filterOutNullPartitionValues)
-// Create metastore tables in a specified database for your data.
-// Once tables are created, the current database will be switched to the specified database.
-tables.createExternalTables(location, format, databaseName, overwrite)
-// Or, if you want to create temporary tables
-tables.createTemporaryTables(location, format)
-```
-
-### Setup a benchmark data by GenData application
 
 You can use GenData application to generate data.
 The following is an example of execution with Spark on YARN.
@@ -105,7 +90,8 @@ After setup, users can use `runExperiment` function to run benchmarking queries 
 ```
 // Setup TPC-DS experiment
 import com.databricks.spark.sql.perf.tpcds.TPCDS
-val tpcds = new TPCDS (sqlContext = sqlContext)
+
+val tpcds = new TPCDS (sqlContext = spark.sqlContext)
 val experiment = tpcds.runExperiment(tpcds.interactiveQueries)
 ```
 
