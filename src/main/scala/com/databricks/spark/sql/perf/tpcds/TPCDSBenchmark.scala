@@ -1,13 +1,14 @@
 package com.databricks.spark.sql.perf.tpcds
 
-import com.databricks.spark.sql.perf.Query
+import com.databricks.spark.sql.perf.{Benchmark, Query}
 import org.apache.log4j.LogManager
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SQLContext, SparkSession}
 
 import scala.collection.mutable
 
-class TPCDSBenchmark
-  extends Tpcds_1_4_Queries
+class TPCDSBenchmark(sqlContext: SQLContext)
+  extends Benchmark(sqlContext)
+  with Tpcds_1_4_Queries
   with ImpalaKitQueries
   with SimpleQueries
   with Serializable {
@@ -143,6 +144,7 @@ object TPCDSBenchmark {
         val sqlContext = spark.sqlContext
 
         val tpcDSBenchmark = new TPCDSBenchmark()
+        tpcDSBenchmark.explain(tpcDSBenchmark.interactiveQueries)
 
       case None =>
         sys.exit(1)
